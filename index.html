@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 MashinHesab 💰</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="KelidHayMashinHesab">
+    <div class="screen" id="screen">0</div>
+
+    <div class="KelidHa">
+        <button onclick="window.location.href='soal.html'">?</button>
+        <button onclick="pak()">C</button>
+        <button onclick="back()">←</button>
+        <button onclick="put('/')">÷</button>
+
+        <button onclick="put('7')">7</button>
+        <button onclick="put('8')">8</button>
+        <button onclick="put('9')">9</button>
+        <button onclick="put('*')">×</button>
+
+        <button onclick="put('4')">4</button>
+        <button onclick="put('5')">5</button>
+        <button onclick="put('6')">6</button>
+        <button onclick="put('-')">-</button>
+
+        <button onclick="put('1')">1</button>
+        <button onclick="put('2')">2</button>
+        <button onclick="put('3')">3</button>
+        <button onclick="put('+')">+</button>
+
+        <button onclick="put('0')">0</button>
+        <button onclick="put('.')">.</button>
+        <button onclick="put('**2')">x²</button>
+        <button onclick="put('**')">^</button>
+
+        <button onclick="put('Math.sqrt')">√</button>
+        <button onclick="sinos()">sin</button>
+        <button onclick="cosinos()">cos</button>
+        <button onclick="tanshant()">tan</button>
+
+        <button onclick="put('Math.log10')">log</button>
+        <button onclick="put('Math.PI')">π</button>
+        <button onclick="put('Math.E')">e</button>
+        <button onclick="window.location.href='mabna.html'">مبنا</button>
+
+        <button onclick="Javab()" class="Javab">=</button>
+    </div>
+</div>
+
+<script>
+    let screen = document.getElementById('screen');
+
+    function put(x) {
+        if (screen.innerText === '0' || screen.innerText === 'Eror404xD') {
+            screen.innerText = x;
+        } else {
+            screen.innerText += x;
+        }
+    }
+
+    function pak() {
+        screen.innerText = '0';
+    }
+
+    function back() {
+        screen.innerText = screen.innerText.slice(0, -1);
+        if (screen.innerText === '') screen.innerText = '0';
+    }
+
+    function Javab() {
+        try {
+            let result = eval(screen.innerText);
+            screen.innerText = result;
+        } catch {
+            screen.innerText = 'Eror404xD';
+        }
+    }
+
+    function sinos() {
+        let deg = screen.innerText;
+        let rad = deg * Math.PI / 180;
+        screen.innerText = Math.sin(rad).toFixed(6);
+    }
+
+    function cosinos() {
+        let deg = screen.innerText;
+        let rad = deg * Math.PI / 180;
+        screen.innerText = Math.cos(rad).toFixed(6);
+    }
+
+    function tanshant() {
+        let deg = screen.innerText;
+        let rad = deg * Math.PI / 180;
+        screen.innerText = Math.tan(rad).toFixed(6);
+    }
+</script>
+</body>
+</html>
