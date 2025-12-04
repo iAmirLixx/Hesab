@@ -9,14 +9,14 @@
 <body>
 
 <div class="Panel">
-    <h1>TabdilMabna</h1>
+    <h1>mabna</h1>
 
     <input type="text" id="num" placeholder="AdadRoVaredKon..." autofocus>
 
     <select id="from">
         <option value="10">مبنا ۱۰ - ده‌دهی</option>
-        <option value="2">مبنا ۲ - دویی (Binary)</option>
-        <option value="8">مبنا ۸ - هشت‌هشتی (Octal)</option>
+        <option value="2">مبنا ۲ - دویی</option>
+        <option value="8">مبنا ۸ - هشت‌هشتی</option>
     </select>
     <select id="to">
         <option value="2">به مبنا ۲ - دویی</option>
@@ -48,12 +48,6 @@
             if (isNaN(decimal)) throw new Error();
 
             let result = decimal.toString(toBase).toUpperCase();
-
-            if (fromBase !== 10) {
-                if (toBase === 2) result = "0b" + result;
-                else if (toBase === 8) result = "0o" + result;
-                else if (toBase === 16) result = "0x" + result;
-            }
 
             resultBox.innerText = result;
         } catch {

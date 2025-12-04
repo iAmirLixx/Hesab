@@ -12,91 +12,204 @@
     <div class="screen" id="screen">0</div>
 
     <div class="KelidHa">
-        <button onclick="window.location.href='soal.html'">?</button>
-        <button onclick="pak()">C</button>
-        <button onclick="back()">←</button>
+        <button onclick="put('-')">-</button>
+        <button onclick="put('*')">×</button>
         <button onclick="put('/')">÷</button>
-
+         <button onclick="pak()">C</button>
+        <button onclick="put('+')">+</button>
         <button onclick="put('7')">7</button>
         <button onclick="put('8')">8</button>
         <button onclick="put('9')">9</button>
-        <button onclick="put('*')">×</button>
-
+        <button onclick="sqrt()">√</button>
         <button onclick="put('4')">4</button>
         <button onclick="put('5')">5</button>
         <button onclick="put('6')">6</button>
-        <button onclick="put('-')">-</button>
-
+        <button onclick="square()">x²</button>
         <button onclick="put('1')">1</button>
         <button onclick="put('2')">2</button>
         <button onclick="put('3')">3</button>
-        <button onclick="put('+')">+</button>
-
-        <button onclick="put('0')">0</button>
+        <button onclick="window.location.href='soal.html'">?</button>
         <button onclick="put('.')">.</button>
-        <button onclick="put('**2')">x²</button>
-        <button onclick="put('**')">^</button>
-
-        <button onclick="put('Math.sqrt')">√</button>
+        <button onclick="put('0')">0</button>
+        <button onclick="window.location.href='mabna.html'">مبنا</button>
         <button onclick="sinos()">sin</button>
         <button onclick="cosinos()">cos</button>
         <button onclick="tanshant()">tan</button>
-
-        <button onclick="put('Math.log10')">log</button>
-        <button onclick="put('Math.PI')">π</button>
-        <button onclick="put('Math.E')">e</button>
-        <button onclick="window.location.href='mabna.html'">مبنا</button>
-
+        <button onclick="log10()">log</button>
         <button onclick="Javab()" class="Javab">=</button>
     </div>
 </div>
 
 <script>
-    let screen = document.getElementById('screen');
+let screen = document.getElementById('screen');
+let expression = '';
 
-    function put(x) {
-        if (screen.innerText === '0' || screen.innerText === 'Eror404xD') {
-            screen.innerText = x;
-        } else {
-            screen.innerText += x;
-        }
+function put(x) {
+    if (screen.innerText === '0' || screen.innerText === 'Eror404xD') {
+        screen.innerText = x;
+        expression = x;
+    } else {
+        screen.innerText += x;
+        expression += x;
     }
+}
 
-    function pak() {
+function pak() {
+    screen.innerText = '0';
+    expression = '';
+}
+
+function back() {
+    screen.innerText = screen.innerText.slice(0, -1);
+    expression = expression.slice(0, -1);
+    if (screen.innerText === '') {
         screen.innerText = '0';
+        expression = '';
     }
+}
 
-    function back() {
-        screen.innerText = screen.innerText.slice(0, -1);
-        if (screen.innerText === '') screen.innerText = '0';
-    }
-
-    function Javab() {
-        try {
-            let result = eval(screen.innerText);
-            screen.innerText = result;
-        } catch {
-            screen.innerText = 'Eror404xD';
+function Javab() {
+    try {
+        let expr = expression
+            .replace(/÷/g, '/')
+            .replace(/×/g, '*')
+            .replace(/\*\*2/g, '**2')
+            .replace(/Math\.sqrt/g, 'Math.sqrt')
+            .replace(/Math\.PI/g, Math.PI)
+            .replace(/Math\.E/g, Math.E)
+            .replace(/Math\.log10/g, 'Math.log10');
+        if (expr.includes('Math.sqrt') && !expr.includes('Math.sqrt(')) {
+            expr = expr.replace('Math.sqrt', `Math.sqrt(${screen.innerText})`);
         }
+        if (expr.includes('Math.log10') && !expr.includes('Math.log10(')) {
+            expr = expr.replace('Math.log10', `Math.log10(${screen.innerText})`);
+        }
+        if (expr.includes('**2')) {
+            let currentNum = parseFloat(screen.innerText);
+            expr = currentNum + '**2';
+        }
+        let result = eval(expr);
+        if (typeof result === 'number') {
+            if (Number.isInteger(result)) {
+                screen.innerText = result;
+            } else {
+                screen.innerText = parseFloat(result.toFixed(10));
+            }
+            expression = result.toString();
+        } else {
+            screen.innerText = result;
+            expression = result.toString();
+        }
+    } catch {
+        screen.innerText = 'Eror404xD';
+        expression = '';
     }
-
-    function sinos() {
-        let deg = screen.innerText;
+}
+function square() {
+    try {
+        let currentValue = parseFloat(screen.innerText);
+        let result = currentValue * currentValue;
+        screen.innerText = result;
+        expression = result.toString();
+    } catch {
+        screen.innerText = 'Eror404xD';
+        expression = '';
+    }
+}
+function sqrt() {
+    try {
+        let currentValue = parseFloat(screen.innerText);
+        if (currentValue >= 0) {
+            let result = Math.sqrt(currentValue);
+            screen.innerText = parseFloat(result.toFixed(10));
+            expression = result.toString();
+        } else {
+            screen.innerText = 'Eror404xD';
+            expression = '';
+        }
+    } catch {
+        screen.innerText = 'Eror404xD';
+        expression = '';
+    }
+}
+function sinos() {
+    try {
+        let deg = parseFloat(screen.innerText);
         let rad = deg * Math.PI / 180;
-        screen.innerText = Math.sin(rad).toFixed(6);
+        let result = Math.sin(rad);
+        screen.innerText = parseFloat(result.toFixed(10));
+        expression = result.toString();
+    } catch {
+        screen.innerText = 'Eror404xD';
+        expression = '';
     }
+}
 
-    function cosinos() {
-        let deg = screen.innerText;
+function cosinos() {
+    try {
+        let deg = parseFloat(screen.innerText);
         let rad = deg * Math.PI / 180;
-        screen.innerText = Math.cos(rad).toFixed(6);
+        let result = Math.cos(rad);
+        screen.innerText = parseFloat(result.toFixed(10));
+        expression = result.toString();
+    } catch {
+        screen.innerText = 'Eror404xD';
+        expression = '';
     }
+}
 
-    function tanshant() {
-        let deg = screen.innerText;
+function tanshant() {
+    try {
+        let deg = parseFloat(screen.innerText);
         let rad = deg * Math.PI / 180;
-        screen.innerText = Math.tan(rad).toFixed(6);
+        let result = Math.tan(rad);
+        screen.innerText = parseFloat(result.toFixed(10));
+        expression = result.toString();
+    } catch {
+        screen.innerText = 'Eror404xD';
+        expression = '';
     }
+}
+function log10() {
+    try {
+        let currentValue = parseFloat(screen.innerText);
+        if (currentValue > 0) {
+            let result = Math.log10(currentValue);
+            screen.innerText = parseFloat(result.toFixed(10));
+            expression = result.toString();
+        } else {
+            screen.innerText = 'Eror404xD';
+            expression = '';
+        }
+    } catch {
+        screen.innerText = 'Eror404xD';
+        expression = '';
+    }
+}
+document.addEventListener('keydown', function(event) {
+    const key = event.key;
+    
+    if (key >= '0' && key <= '9') {
+        put(key);
+    } else if (key === '.') {
+        put('.');
+    } else if (key === '+') {
+        put('+');
+    } else if (key === '-') {
+        put('-');
+    } else if (key === '*') {
+        put('*');
+    } else if (key === '/') {
+        put('/');
+    } else if (key === 'Enter') {
+        event.preventDefault();
+        Javab();
+    } else if (key === 'Escape') {
+        pak();
+    } else if (key === 'Backspace') {
+        back();
+    }
+});
 </script>
 </body>
 </html>
